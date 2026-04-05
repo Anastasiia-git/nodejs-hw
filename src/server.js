@@ -30,14 +30,13 @@ app.get('/notes', (req, res) => {
   res.status(200).json({ message: 'Retrieved all notes' });
 });
 
-app.get('/notes/:notesId', (req, res) => {
-  const { notesId } = req.params;
-  res.status(200).json({ message: `Retrieved note with ID: ${notesId}` });
+app.get('/notes/:noteId', (req, res) => {
+  const { noteId } = req.params;
+  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
 });
 
 // Маршрут для тестування middleware помилки
-app.get('/test-error', (req, res) => {
-  // Штучна помилка для прикладу
+app.get('/test-error', () => {
   throw new Error('Something went wrong');
 });
 
