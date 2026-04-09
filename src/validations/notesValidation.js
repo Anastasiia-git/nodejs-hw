@@ -37,15 +37,17 @@ export const noteIdSchema = {
 
 export const createNoteSchema = {
   [Segments.BODY]: Joi.object({
-    title: Joi.string().min(1).messages({
+    title: Joi.string().min(1).required().messages({
       'string.base': 'Title must be a string',
       'string.min': 'Title should have at least {#limit} characters',
+      'any.required': 'Title is required',
     }),
-    content: Joi.string().messages({
+    content: Joi.string().allow('').messages({
       'string.base': 'Content must be a string',
     }),
     tag: Joi.string()
       .valid(...TAGS)
+      .optional()
       .messages({
         'any.only': 'Tag must be one of: Todo, Work, Personal or other',
       }),
@@ -63,7 +65,7 @@ export const updateNoteSchema = {
       'string.min': 'Title should have at least {#limit} characters',
     }),
 
-    content: Joi.string().messages({
+    content: Joi.string().allow('').messages({
       'string.base': 'Content must be a string',
     }),
 
@@ -77,13 +79,4 @@ export const updateNoteSchema = {
     .messages({
       'object.min': 'At least one field (title, content, tag) must be provided',
     }),
-};
-
-export const getNotesSchema = {
-  [Segments.QUERY]: Joi.object({
-    page: Joi.number().integer().min(1),
-    perPage: Joi.number().integer().min(5).max(20),
-    tag: Joi.string().valid(...TAGS),
-    search: Joi.string(),
-  }),
 };
