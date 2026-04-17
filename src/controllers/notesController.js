@@ -31,11 +31,9 @@ export const getAllNotes = async (req, res) => {
 export const getNoteById = async (req, res) => {
   const { noteId } = req.params;
   const note = await Note.findOne({ _id: noteId, userId: req.user._id });
-
   if (!note) {
     throw createHttpError(404, 'Note not found');
   }
-
   res.status(200).json(note);
 };
 
@@ -53,17 +51,14 @@ export const deleteNote = async (req, res) => {
     _id: noteId,
     userId: req.user._id,
   });
-
   if (!note) {
     throw createHttpError(404, 'Note not found');
   }
-
   res.status(200).json(note);
 };
 
 export const updateNote = async (req, res) => {
   const { noteId } = req.params;
-
   const note = await Note.findOneAndUpdate(
     { _id: noteId, userId: req.user._id },
     req.body,
@@ -71,10 +66,15 @@ export const updateNote = async (req, res) => {
       returnDocument: 'after',
     },
   );
-
   if (!note) {
     throw createHttpError(404, 'Note not found');
   }
-
   res.status(200).json(note);
+};
+
+export const updateUserAvatar = async (req, res, next) => {
+  if (!req.file) {
+    throw createHttpError(400, 'No file');
+  }
+  res.status(200).json({ url: '' });
 };
